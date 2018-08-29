@@ -1,0 +1,8 @@
+name: 'HuaPay Plugin'
+code: HuaPayPlugin
+version: 0.1.0
+event: HuaPayPluginEvent
+service:
+    - HuaPayPluginServiceProvider
+orm.path:
+    - /Resource/doctrine
