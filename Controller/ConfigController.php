@@ -27,6 +27,7 @@ class ConfigController
     public function index(Application $app, Request $request)
     {
 
+	$PaymentConfigRepository = $app['eccube.plugin.repository.paymentconfig'];
         $form = $app['form.factory']->createBuilder('huapayplugin_config')->getForm();
 
         $form->handleRequest($request);
@@ -34,7 +35,14 @@ class ConfigController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
+	    $paymentConfig = $PaymentConfigRepository->find(1);
+	    if (is_null($paymentConfig)) {
+	        var_dump('null');
+	    }
+
             // add code...
+	    $app['monolog.logger.huapayplugin']->debug($data);
+	    var_dump($data);
         }
 
         return $app->render('HuaPayPlugin/Resource/template/admin/config.twig', array(

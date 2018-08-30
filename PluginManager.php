@@ -36,6 +36,9 @@ class PluginManager extends AbstractPluginManager
      */
     public function uninstall($config, Application $app)
     {
+        $this->disableAllPayment($app);
+
+        $this->migrationSchema($app, __DIR__.'/Resource/doctrine/migration', $config['code'], 0);
     }
 
     /**
@@ -47,6 +50,19 @@ class PluginManager extends AbstractPluginManager
      */
     public function enable($config, Application $app)
     {
+        $this->migrationSchema($app, __DIR__.'/Resource/doctrine/migration', $config['code']);
+
+        $em = $app['orm.em'];
+        $em->getConnection()->beginTransaction();
+        try {
+            // enable each payment methods
+
+            $em->getConnection()->commit();
+
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback();
+            throw $e;
+	}
     }
 
     /**
@@ -58,6 +74,7 @@ class PluginManager extends AbstractPluginManager
      */
     public function disable($config, Application $app)
     {
+        $this->disableAllPayment($app);
     }
 
     /**
@@ -69,6 +86,70 @@ class PluginManager extends AbstractPluginManager
      */
     public function update($config, Application $app)
     {
+    }
+
+    private function createPayment($method, $app)
+    {
+        $em = $app['orm.em'];
+        $Payment = new Payment();
+
+        $rank = $app['eccube.repository.payment']->findOneBy(array(), array('rank' => 'DESC'))
+                ->getRank() + 1;
+
+        $Payment->setMethod($method);
+        $Payment->setCharge(0);
+        $Payment->setRuleMin(0);
+        $Payment->setFixFlg(Constant::ENABLED);
+        $Payment->setChargeFlg(Constant::ENABLED);
+        $Payment->setRank($rank);
+        $Payment->setDelFlg(Constant::DISABLED);
+
+        $em->persist($Payment);
+        $em->flush($Payment);
+
+        return($Payment->getId());
+    }
+    private function enablePayment($payment_id, $app)
+    {
+        $em = $app['orm.em'];
+        // soft_deleteを無効にする
+        $softDeleteFilter = $em->getFilters()->getFilter('soft_delete');
+        $softDeleteFilter->setExcludes(array(
+            'Eccube\Entity\Payment'
+        ));
+
+        $Payment = $app['eccube.repository.payment']->find($payment_id);
+        if ($Payment) {
+            $Payment->setDelFlg(Constant::DISABLED);
+            $em->flush($Payment);
+        }
+    }
+
+    private function disablePayment($payment_id, $app)
+    {
+        $em = $app['orm.em'];
+
+        $Payment = $app['eccube.repository.payment']->find($payment_id);
+        if ($Payment) {
+            $Payment->setDelFlg(Constant::ENABLED);
+            $em->flush($Payment);
+        }
+    }
+    private function disableAllPayment($app)
+    {
+        $em = $app['orm.em'];
+        $paymentMethodConfigRepository = $em->getRepository('Plugin\HuaPay\Entity\PaymentMethodConfig');
+
+	$query = $paymentMethodConfigRepository->createQueryBuilder('p')
+            ->where('payment_config_id = (:payment_config_id)')
+            ->orderBy('id', 'ASC')
+            ->setParameter('payment_config_id', 1)
+            ->getQuery();
+
+	$paymentMethodConfigs = $query->getArrayResult();
+	var_dump($paymentMethodConfigs);
+
+	// loop and call each disablePayment
     }
 
 }
