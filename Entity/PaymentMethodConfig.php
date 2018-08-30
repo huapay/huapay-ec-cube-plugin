@@ -32,12 +32,7 @@ class PaymentMethodConfig extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $enabled;
-
-    /**
-     * @var string
-     */
-    private $reference_prefix;
+    private $is_enabled;
 
 
     /**
@@ -133,48 +128,25 @@ class PaymentMethodConfig extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set enabled
+     * Set is_enabled
      *
-     * @param integer $enabled
+     * @param integer $isEnabled
      * @return PaymentMethodConfig
      */
-    public function setEnabled($enabled)
+    public function setIsEnabled($isEnabled)
     {
-        $this->enabled = $enabled;
+        $this->is_enabled = $isEnabled;
 
         return $this;
     }
 
     /**
-     * Get enabled
+     * Get is_enabled
      *
      * @return integer 
      */
-    public function getEnabled()
+    public function getIsEnabled()
     {
-        return $this->enabled;
-    }
-
-    /**
-     * Set reference_prefix
-     *
-     * @param string $referencePrefix
-     * @return PaymentMethodConfig
-     */
-    public function setReferencePrefix($referencePrefix)
-    {
-        $this->reference_prefix = $referencePrefix;
-
-        return $this;
-    }
-
-    /**
-     * Get reference_prefix
-     *
-     * @return string 
-     */
-    public function getReferencePrefix()
-    {
-        return $this->reference_prefix;
+        return $this->is_enabled;
     }
 }

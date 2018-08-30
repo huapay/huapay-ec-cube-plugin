@@ -25,11 +25,8 @@ Plugin\HuaPayPlugin\Entity\PaymentMethodConfig:
         name:
             type: text
             nullable: true
-        enabled:
+        is_enabled:
             type: smallint
             nullable: true
             default: '1'
-        reference_prefix:
-            type: text
-            nullable: true
     lifecycleCallbacks: {  }
