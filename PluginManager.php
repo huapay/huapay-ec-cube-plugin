@@ -138,16 +138,16 @@ class PluginManager extends AbstractPluginManager
     private function disableAllPayment($app)
     {
         $em = $app['orm.em'];
-        $paymentMethodConfigRepository = $em->getRepository('Plugin\HuaPay\Entity\PaymentMethodConfig');
+        $paymentMethodRepository = $em->getRepository('Plugin\HuaPay\Entity\PaymentMethod');
 
-	$query = $paymentMethodConfigRepository->createQueryBuilder('p')
-            ->where('payment_config_id = (:payment_config_id)')
+	$query = $paymentMethodRepository->createQueryBuilder('p')
+            ->where('plugin_payment_id = (:plugin_payment_id)')
             ->orderBy('id', 'ASC')
-            ->setParameter('payment_config_id', 1)
+            ->setParameter('plugin_payment_id', 1)
             ->getQuery();
 
-	$paymentMethodConfigs = $query->getArrayResult();
-	var_dump($paymentMethodConfigs);
+	$paymentMethods = $query->getArrayResult();
+	var_dump($paymentMethods);
 
 	// loop and call each disablePayment
     }

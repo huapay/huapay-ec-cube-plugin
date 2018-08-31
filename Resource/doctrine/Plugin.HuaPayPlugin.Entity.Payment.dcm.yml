@@ -1,0 +1,18 @@
+Plugin\HuaPayPlugin\Entity\Payment:
+    type: entity
+    table: plg_huapayplugin_payment
+    repositoryClass: Plugin\HuaPayPlugin\Repository\PaymentRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        api_token:
+            type: string
+        is_testing:
+            type: smallint
+            options:
+                default: '1'
+    lifecycleCallbacks: {  }

@@ -5,9 +5,9 @@ namespace Plugin\HuaPayPlugin\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * PaymentConfig
+ * Payment
  */
-class PaymentConfig extends \Eccube\Entity\AbstractEntity
+class Payment extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
@@ -25,16 +25,10 @@ class PaymentConfig extends \Eccube\Entity\AbstractEntity
     private $is_testing;
 
     /**
-     * @var string
-     */
-    private $reference_prefix;
-
-
-    /**
      * Set id
      *
      * @param integer $id
-     * @return PaymentConfig
+     * @return Payment
      */
     public function setId($id)
     {
@@ -57,7 +51,7 @@ class PaymentConfig extends \Eccube\Entity\AbstractEntity
      * Set api_token
      *
      * @param string $apiToken
-     * @return PaymentConfig
+     * @return Payment
      */
     public function setApiToken($apiToken)
     {
@@ -80,7 +74,7 @@ class PaymentConfig extends \Eccube\Entity\AbstractEntity
      * Set is_testing
      *
      * @param integer $isTesting
-     * @return PaymentConfig
+     * @return Payment
      */
     public function setIsTesting($isTesting)
     {
@@ -97,28 +91,5 @@ class PaymentConfig extends \Eccube\Entity\AbstractEntity
     public function getIsTesting()
     {
         return $this->is_testing;
-    }
-
-    /**
-     * Set reference_prefix
-     *
-     * @param string $referencePrefix
-     * @return PaymentConfig
-     */
-    public function setReferencePrefix($referencePrefix)
-    {
-        $this->reference_prefix = $referencePrefix;
-
-        return $this;
-    }
-
-    /**
-     * Get reference_prefix
-     *
-     * @return string 
-     */
-    public function getReferencePrefix()
-    {
-        return $this->reference_prefix;
     }
 }

@@ -20,7 +20,7 @@ use Eccube\Application;
 class Version20180830130241 extends AbstractMigration
 {
     protected $entities = array(
-        'Plugin\HuaPayPlugin\Entity\PaymentMethodConfig'
+        'Plugin\HuaPayPlugin\Entity\PaymentMethod'
     );
 
     /**

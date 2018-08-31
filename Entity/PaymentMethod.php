@@ -5,9 +5,9 @@ namespace Plugin\HuaPayPlugin\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * PaymentMethodConfig
+ * PaymentMethod
  */
-class PaymentMethodConfig extends \Eccube\Entity\AbstractEntity
+class PaymentMethod extends \Eccube\Entity\AbstractEntity
 {
     /**
      * @var integer
@@ -17,12 +17,12 @@ class PaymentMethodConfig extends \Eccube\Entity\AbstractEntity
     /**
      * @var integer
      */
-    private $payment_config_id;
+    private $plugin_payment_id;
 
     /**
      * @var integer
      */
-    private $eccube_payment_id;
+    private $payment_id;
 
     /**
      * @var string
@@ -39,7 +39,7 @@ class PaymentMethodConfig extends \Eccube\Entity\AbstractEntity
      * Set id
      *
      * @param integer $id
-     * @return PaymentMethodConfig
+     * @return PaymentMethod
      */
     public function setId($id)
     {
@@ -59,56 +59,56 @@ class PaymentMethodConfig extends \Eccube\Entity\AbstractEntity
     }
 
     /**
-     * Set payment_config_id
+     * Set plugin_payment_id
      *
-     * @param integer $paymentConfigId
-     * @return PaymentMethodConfig
+     * @param integer $pluginPaymentId
+     * @return PaymentMethod
      */
-    public function setPaymentConfigId($paymentConfigId)
+    public function setPluginPaymentId($pluginPaymentId)
     {
-        $this->payment_config_id = $paymentConfigId;
+        $this->plugin_payment_id = $pluginPaymentId;
 
         return $this;
     }
 
     /**
-     * Get payment_config_id
+     * Get plugin_payment_id
      *
      * @return integer 
      */
-    public function getPaymentConfigId()
+    public function getPluginPaymentId()
     {
-        return $this->payment_config_id;
+        return $this->plugin_payment_id;
     }
 
     /**
-     * Set eccube_payment_id
+     * Set payment_id
      *
-     * @param integer $eccubePaymentId
-     * @return PaymentMethodConfig
+     * @param integer $paymentId
+     * @return PaymentMethod
      */
-    public function setEccubePaymentId($eccubePaymentId)
+    public function setPaymentId($paymentId)
     {
-        $this->eccube_payment_id = $eccubePaymentId;
+        $this->payment_id = $paymentId;
 
         return $this;
     }
 
     /**
-     * Get eccube_payment_id
+     * Get payment_id
      *
      * @return integer 
      */
-    public function getEccubePaymentId()
+    public function getPaymentId()
     {
-        return $this->eccube_payment_id;
+        return $this->payment_id;
     }
 
     /**
      * Set name
      *
      * @param string $name
-     * @return PaymentMethodConfig
+     * @return PaymentMethod
      */
     public function setName($name)
     {
@@ -131,7 +131,7 @@ class PaymentMethodConfig extends \Eccube\Entity\AbstractEntity
      * Set is_enabled
      *
      * @param integer $isEnabled
-     * @return PaymentMethodConfig
+     * @return PaymentMethod
      */
     public function setIsEnabled($isEnabled)
     {
