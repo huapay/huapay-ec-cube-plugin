@@ -1,0 +1,29 @@
+Plugin\HuaPayPlugin\Entity\PaymentMethod:
+    type: entity
+    table: plg_huapayplugin_paymentmethod
+    repositoryClass: Plugin\HuaPayPlugin\Repository\PaymentMethodRepository
+    indexes:
+        plugin_payment_id_name_index:
+            columns: [ plugin_payment_id, name ]
+        payment_id_index:
+            columns: [ payment_id ]
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        plugin_payment_id:
+            type: integer
+            unsigned: false
+        payment_id:
+            type: integer
+            unsigned: false
+        name:
+            type: string
+        is_enabled:
+            type: smallint
+            options:
+                default: '1'
+    lifecycleCallbacks: {  }

@@ -38,6 +38,12 @@ class HuaPayPluginServiceProvider implements ServiceProviderInterface
         }));
 
         // Repository
+        $app['eccube.plugin.repository.payment'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Plugin\HuaPayPlugin\Entity\Payment');
+        });
+        $app['eccube.plugin.repository.paymentmethod'] = $app->share(function () use ($app) {
+            return $app['orm.em']->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod');
+        });
 
         // Service
 
