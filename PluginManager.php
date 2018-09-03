@@ -14,9 +14,12 @@ namespace Plugin\HuaPayPlugin;
 use Eccube\Application;
 use Eccube\Plugin\AbstractPluginManager;
 use Plugin\HuapayPlugin\Entity;
+use Eccube\Entity\Payment;
+use Eccube\Common\Constant;
 
 class PluginManager extends AbstractPluginManager
 {
+    const API_TOKEN_DEFAULT = 'HUAPAY_API_TOKEN_DEFAULT';
 
     /**
      * プラグインインストール時の処理
@@ -62,12 +65,67 @@ class PluginManager extends AbstractPluginManager
                 $pay = new Entity\Payment();
                 $pay->setId(1);
                 $pay->setIsTesting(1);
-		$pay->setApiToken('dummy');
+		$pay->setApiToken(HUAPAY_APITOKEN_DEFAULT);
                 $em->persist($pay);
                 $em->flush($pay);
             }
 
-            // enable each payment methods
+	    $method_1 = $em->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod')->find(1);
+            if (!$method_1) {
+                $payment_id = $this->createPayment('UnionPay(銀聯)', $app);
+
+		$pm = new Entity\PaymentMethod();
+		$pm->setId(1);
+		$pm->setPluginPaymentId($pay->getId());
+		$pm->setPaymentId($payment_id);
+		$pm->setIsEnabled(1);
+		$pm->setName('unionpay');
+		$em->persist($pm);
+		$em->flush();
+                $this->enablePayment($payment_id, $app);
+            }
+	    $method_1->setIsEnabled(1);
+	    $em->persist($method_1);
+	    $em->flush();
+            $this->enablePayment($method_1->getPaymentId(), $app);
+
+	    $method_2 = $em->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod')->find(2);
+            if (!$method_2) {
+                $payment_id = $this->createPayment('AliPay(支付宝)', $app);
+
+		$pm = new Entity\PaymentMethod();
+		$pm->setId(2);
+		$pm->setPluginPaymentId($pay->getId());
+		$pm->setPaymentId($payment_id);
+		$pm->setIsEnabled(1);
+		$pm->setName('alipay');
+		$em->persist($pm);
+		$em->flush();
+                $this->enablePayment($payment_id, $app);
+            }
+	    $method_2->setIsEnabled(1);
+	    $em->persist($method_2);
+	    $em->flush();
+            $this->enablePayment($method_2->getPaymentId(), $app);
+
+	    $method_3 = $em->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod')->find(3);
+            if (!$method_3) {
+                $payment_id = $this->createPayment('WeChatPay(微信支付)', $app);
+
+		$pm = new Entity\PaymentMethod();
+		$pm->setId(3);
+		$pm->setPluginPaymentId($pay->getId());
+		$pm->setPaymentId($payment_id);
+		$pm->setIsEnabled(1);
+		$pm->setName('wechatpay');
+		$em->persist($pm);
+		$em->flush();
+                $this->enablePayment($payment_id, $app);
+            }
+	    $method_3->setIsEnabled(1);
+	    $em->persist($method_3);
+	    $em->flush();
+            $this->enablePayment($method_3->getPaymentId(), $app);
 
             $em->getConnection()->commit();
 
@@ -103,10 +161,11 @@ class PluginManager extends AbstractPluginManager
     private function createPayment($method, $app)
     {
         $em = $app['orm.em'];
-        $Payment = new Payment();
+        $Payment = new \Eccube\Entity\Payment();
 
         $rank = $app['eccube.repository.payment']->findOneBy(array(), array('rank' => 'DESC'))
                 ->getRank() + 1;
+	$Member = $em->getRepository('Eccube\Entity\Member')->find(1);
 
         $Payment->setMethod($method);
         $Payment->setCharge(0);
@@ -115,6 +174,7 @@ class PluginManager extends AbstractPluginManager
         $Payment->setChargeFlg(Constant::ENABLED);
         $Payment->setRank($rank);
         $Payment->setDelFlg(Constant::DISABLED);
+	$Payment->setCreator($Member);
 
         $em->persist($Payment);
         $em->flush($Payment);
@@ -140,6 +200,7 @@ class PluginManager extends AbstractPluginManager
     private function disablePayment($payment_id, $app)
     {
         $em = $app['orm.em'];
+	var_dump($payment_id);
 
         $Payment = $app['eccube.repository.payment']->find($payment_id);
         if ($Payment) {
@@ -158,10 +219,11 @@ class PluginManager extends AbstractPluginManager
             ->setParameter('plugin_payment_id', 1)
             ->getQuery();
 
-	$paymentMethods = $query->getArrayResult();
+	$paymentMethods = $query->getResult();
 	var_dump($paymentMethods);
-
-	// loop and call each disablePayment
+	foreach ($paymentMethods as $pm) {
+		$this->disablePayment($pm->getPaymentId(), $app);
+	}
     }
 
 }

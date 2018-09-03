@@ -26,9 +26,9 @@ class ConfigController
      */
     public function index(Application $app, Request $request)
     {
-
 	$PaymentRepository = $app['eccube.plugin.repository.payment'];
-        $form = $app['form.factory']->createBuilder('huapayplugin_config')->getForm();
+	$Payment = $PaymentRepository->find(1);
+        $form = $app['form.factory']->createBuilder('huapayplugin_config', $Payment)->getForm();
 
         $form->handleRequest($request);
 

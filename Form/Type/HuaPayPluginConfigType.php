@@ -22,12 +22,52 @@ class HuaPayPluginConfigType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
-                'label' => '項目A',
+            ->add('api_token', 'text', array(
+                'label' => 'APIトークン',
                 'required' => true,
                 'constraints' => array(
                     new Assert\NotBlank(),
                 ),
+            ))
+            ->add('is_testing', 'choice', array(
+                'choices' => array(
+                    0 => '商用環境',
+                    1 => 'テスト環境'
+                ),
+                'expanded' => true,
+                'multiple' => false,
+                'required' => true,
+                'empty_value' => false,
+            ))
+	    ->add('uses_unionpay', 'choice', array(
+                'choices' => array(
+                    1 => '有効',
+                    0 => '無効',
+                ),
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'empty_value' => false,
+            ))
+            ->add('uses_alipay', 'choice', array(
+                'choices' => array(
+                    1 => '有効',
+                    0 => '無効',
+                ),
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'empty_value' => false,
+            ))
+            ->add('uses_wechatpay', 'choice', array(
+                'choices' => array(
+                    1 => '有効',
+                    0 => '無効',
+                ),
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'empty_value' => false,
             ));
     }
 

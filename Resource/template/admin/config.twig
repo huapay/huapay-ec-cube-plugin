@@ -14,12 +14,56 @@
             <div class="col-md-9">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">HuaPayPlugin設定</h3>
+                        <h3 class="box-title">APIトークン</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body form-horizontal">
-                        {{ form_row(form.name) }}
+                        {{ form_row(form.api_token) }}
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
+
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">接続環境</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body form-horizontal">
+                        {{ form_label(form.is_testing, ' ') }}
+                        {{ form_widget(form.is_testing) }}
+                        {{ form_errors(form.is_testing) }}
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">決済手段</h3>
+                    </div><!-- /.box-header -->
+
+                    <div class="box-body form-horizontal">
+                        <div class="row">
+                            {{ form_label(form.uses_unionpay, 'UnionPay (銀聯)') }}
+                            <div class="col-sm-10">
+                                {{ form_widget(form.uses_unionpay) }}
+                            </div>
+                            {{ form_errors(form.uses_unionpay) }}
+                        </div>
+
+                        <div class="row">
+                            {{ form_label(form.uses_alipay, 'AliPay (支付宝)') }}
+                            <div class="col-sm-10">
+                                {{ form_widget(form.uses_alipay) }}
+                            </div>
+                            {{ form_errors(form.uses_alipay) }}
+                        </div>
+
+                        <div class="row">
+			    {{ form_label(form.uses_wechatpay, 'WeChatPay (微信支付)') }}
+                            <div class="col-sm-10">
+				{{ form_widget(form.uses_wechatpay) }}
+                            </div>
+			    {{ form_errors(form.uses_wechatpay) }}
+                        </div>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
             </div><!-- /.col -->
             <div class="col-md-3" id="aside_column">
                 <div id="common_box" class="col_inner">
