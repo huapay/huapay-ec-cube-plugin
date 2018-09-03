@@ -13,6 +13,7 @@ namespace Plugin\HuaPayPlugin;
 
 use Eccube\Application;
 use Eccube\Plugin\AbstractPluginManager;
+use Plugin\HuapayPlugin\Entity;
 
 class PluginManager extends AbstractPluginManager
 {
@@ -55,6 +56,17 @@ class PluginManager extends AbstractPluginManager
         $em = $app['orm.em'];
         $em->getConnection()->beginTransaction();
         try {
+            $pay = $em->getRepository('Plugin\HuaPayPlugin\Entity\Payment')->find(1);
+
+            if( !$pay ){
+                $pay = new Entity\Payment();
+                $pay->setId(1);
+                $pay->setIsTesting(1);
+		$pay->setApiToken('dummy');
+                $em->persist($pay);
+                $em->flush($pay);
+            }
+
             // enable each payment methods
 
             $em->getConnection()->commit();
@@ -138,11 +150,11 @@ class PluginManager extends AbstractPluginManager
     private function disableAllPayment($app)
     {
         $em = $app['orm.em'];
-        $paymentMethodRepository = $em->getRepository('Plugin\HuaPay\Entity\PaymentMethod');
+        $paymentMethodRepository = $em->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod');
 
 	$query = $paymentMethodRepository->createQueryBuilder('p')
-            ->where('plugin_payment_id = (:plugin_payment_id)')
-            ->orderBy('id', 'ASC')
+            ->where('p.plugin_payment_id = (:plugin_payment_id)')
+            ->orderBy('p.id', 'ASC')
             ->setParameter('plugin_payment_id', 1)
             ->getQuery();
 
