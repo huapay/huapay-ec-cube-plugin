@@ -74,13 +74,13 @@ class PluginManager extends AbstractPluginManager
             if (!$method_1) {
                 $payment_id = $this->createPayment('UnionPay(銀聯)', $app);
 
-		$pm = new Entity\PaymentMethod();
-		$pm->setId(1);
-		$pm->setPluginPaymentId($pay->getId());
-		$pm->setPaymentId($payment_id);
-		$pm->setIsEnabled(1);
-		$pm->setName('unionpay');
-		$em->persist($pm);
+		$method_1 = new Entity\PaymentMethod();
+		$method_1->setId(1);
+		$method_1->setPluginPaymentId($pay->getId());
+		$method_1->setPaymentId($payment_id);
+		$method_1->setIsEnabled(1);
+		$method_1->setName('unionpay');
+		$em->persist($method_1);
 		$em->flush();
                 $this->enablePayment($payment_id, $app);
             }
@@ -93,13 +93,13 @@ class PluginManager extends AbstractPluginManager
             if (!$method_2) {
                 $payment_id = $this->createPayment('AliPay(支付宝)', $app);
 
-		$pm = new Entity\PaymentMethod();
-		$pm->setId(2);
-		$pm->setPluginPaymentId($pay->getId());
-		$pm->setPaymentId($payment_id);
-		$pm->setIsEnabled(1);
-		$pm->setName('alipay');
-		$em->persist($pm);
+		$method_2 = new Entity\PaymentMethod();
+		$method_2->setId(2);
+		$method_2->setPluginPaymentId($pay->getId());
+		$method_2->setPaymentId($payment_id);
+		$method_2->setIsEnabled(1);
+		$method_2->setName('alipay');
+		$em->persist($method_2);
 		$em->flush();
                 $this->enablePayment($payment_id, $app);
             }
@@ -112,13 +112,13 @@ class PluginManager extends AbstractPluginManager
             if (!$method_3) {
                 $payment_id = $this->createPayment('WeChatPay(微信支付)', $app);
 
-		$pm = new Entity\PaymentMethod();
-		$pm->setId(3);
-		$pm->setPluginPaymentId($pay->getId());
-		$pm->setPaymentId($payment_id);
-		$pm->setIsEnabled(1);
-		$pm->setName('wechatpay');
-		$em->persist($pm);
+		$method_3 = new Entity\PaymentMethod();
+		$method_3->setId(3);
+		$method_3->setPluginPaymentId($pay->getId());
+		$method_3->setPaymentId($payment_id);
+		$method_3->setIsEnabled(1);
+		$method_3->setName('wechatpay');
+		$em->persist($method_3);
 		$em->flush();
                 $this->enablePayment($payment_id, $app);
             }

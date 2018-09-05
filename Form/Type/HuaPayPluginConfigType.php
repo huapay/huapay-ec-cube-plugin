@@ -48,6 +48,7 @@ class HuaPayPluginConfigType extends AbstractType
                 'multiple' => false,
                 'required' => true,
                 'empty_value' => false,
+		'mapped' => false,
             ))
             ->add('uses_alipay', 'choice', array(
                 'choices' => array(
@@ -58,6 +59,7 @@ class HuaPayPluginConfigType extends AbstractType
                 'multiple' => false,
                 'required' => true,
                 'empty_value' => false,
+		'mapped' => false,
             ))
             ->add('uses_wechatpay', 'choice', array(
                 'choices' => array(
@@ -68,6 +70,7 @@ class HuaPayPluginConfigType extends AbstractType
                 'multiple' => false,
                 'required' => true,
                 'empty_value' => false,
+		'mapped' => false,
             ));
     }
 
