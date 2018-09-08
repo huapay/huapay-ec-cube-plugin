@@ -200,7 +200,6 @@ class PluginManager extends AbstractPluginManager
     private function disablePayment($payment_id, $app)
     {
         $em = $app['orm.em'];
-	var_dump($payment_id);
 
         $Payment = $app['eccube.repository.payment']->find($payment_id);
         if ($Payment) {
@@ -220,7 +219,6 @@ class PluginManager extends AbstractPluginManager
             ->getQuery();
 
 	$paymentMethods = $query->getResult();
-	var_dump($paymentMethods);
 	foreach ($paymentMethods as $pm) {
 		$this->disablePayment($pm->getPaymentId(), $app);
 	}
