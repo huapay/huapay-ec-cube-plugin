@@ -24,6 +24,10 @@ class HuaPayPluginServiceProvider implements ServiceProviderInterface
 
     public function register(BaseApplication $app)
     {
+	$app->match('/shopping/huapay', '\\Plugin\\HuaPayPlugin\\Controller\\HuaPayPluginController::index')->bind('huapayplugin');
+	$app->match('/shopping/huapay/ipn', '\\Plugin\\HuaPayPlugin\\Controller\\HuaPayPluginController::api_ipn')->bind('huapayplugin_ipn');
+	$app->match('/shopping/huapay/callback', '\\Plugin\\HuaPayPlugin\\Controller\\HuaPayPluginController::api_callback')->bind('huapayplugin_callback');
+
         // プラグイン用設定画面
         $app->match('/'.$app['config']['admin_route'].'/plugin/HuaPayPlugin/config', 'Plugin\HuaPayPlugin\Controller\ConfigController::index')->bind('plugin_HuaPayPlugin_config');
 

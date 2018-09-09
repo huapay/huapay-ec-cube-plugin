@@ -1,52 +1,63 @@
 <?php
-
-/*
- * This file is part of the HuaPayPlugin
- *
- * Copyright (C) 2018 HuaPay
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Plugin\HuaPayPlugin;
 
-use Eccube\Application;
-use Eccube\Event\EventArgs;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Eccube\Util\EntityUtil;
+use Eccube\Common\Constant;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 
 class HuaPayPluginEvent
 {
-
-    /** @var  \Eccube\Application $app */
     private $app;
 
-    /**
-     * HuaPayPluginEvent constructor.
-     *
-     * @param Application $app
-     */
-    public function __construct(Application $app)
+    public function __construct($app)
     {
         $this->app = $app;
     }
-
-    /**
-     * @param GetResponseEvent $event
-     */
-    public function onRouteShoppingConfirmRequest(GetResponseEvent $event)
+    
+    public function onControllerShoppingConfirmBefore($event = NULL)
     {
-    }
+        $order = $this->app['eccube.repository.order']->findOneBy(array('pre_order_id' => $this->app['eccube.service.cart']->getPreOrderId()));
+        $form = $this->app['eccube.service.shopping']->getShippingForm($order);
 
-    /**
-     * @param GetResponseEvent $event
-     */
-    public function onRouteAdminSettingShopPaymentDeleteRequest(GetResponseEvent $event)
+        $request = $event->getRequest();
+        $response = $event->getResponse();
+
+        $payment_methods = $this->app['eccube.plugin.repository.paymentmethod']->findBy(array('plugin_payment_id' => 1));
+	$payment_method_ids = array_map(function($payment_method) {
+		return $payment_method->getPaymentId();
+	}, $payment_methods);
+        $payment = $order->getPayment();
+        
+        if (in_array($payment->getId(), $payment_method_ids, true)) {
+	    $url = $this->app->url('huapayplugin');
+          
+	    if ($event instanceof \Symfony\Component\HttpKernel\Event\KernelEvent) {
+                $response = $this->app->redirect($url);
+                $event->setResponse($response);
+                return;
+            } else {
+                header("Location: " . $url);
+                exit;
+            }
+        }
+    }
+    
+    public function onControllerAdminPaymentDeleteBefore($event = NULL)
     {
-    }
+        if ($this->app->isGranted('ROLE_ADMIN')) {
+            $request = $event->getRequest();
+            $id = $request->get('id');
 
+            $payment_methods = $this->app['eccube.plugin.repository.paymentmethod']->findBy(array('plugin_payment_id' => 1));
+	    foreach ($payment_methods as $payment_method) {
+	        if ($id == $payment_method->getPaymentId()) {
+                    $payment_method->setIsEnabled(0);
+                    $this->app['orm.em']->flush($payment_method);
+		}
+	    }
+        }
+    }
 }

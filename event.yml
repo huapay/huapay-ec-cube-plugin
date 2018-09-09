@@ -1,4 +1,4 @@
-eccube.event.route.shopping_confirm.request:
-    - [onRouteShoppingConfirmRequest, NORMAL]
-eccube.event.route.admin_setting_shop_payment_delete.request:
-    - [onRouteAdminSettingShopPaymentDeleteRequest, NORMAL]
+eccube.event.controller.shopping_confirm.before:
+    - [onControllerShoppingConfirmBefore, NORMAL]
+eccube.event.render.admin_setting_shop_payment_delete.before:
+    - [onControllerAdminPaymentDeleteBefore, NORMAL]
