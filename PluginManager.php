@@ -19,7 +19,13 @@ use Eccube\Common\Constant;
 
 class PluginManager extends AbstractPluginManager
 {
+    /* TO BE MOVED INTO "Const.php" */
     const API_TOKEN_DEFAULT = 'HUAPAY_API_TOKEN_DEFAULT';
+    const PAYMENT_METHOD_INFO = [
+	[ 'shortname' => 'unionpay', 'name' => 'UnionPay(銀聯)'],
+	[ 'shortname' => 'alipay', 'name' => 'AliPay(支付宝)'],
+	[ 'shortname' => 'wechatpay', 'name' => 'WeChatPay(微信支付)'],
+    ];
 
     /**
      * プラグインインストール時の処理
@@ -60,72 +66,38 @@ class PluginManager extends AbstractPluginManager
         $em->getConnection()->beginTransaction();
         try {
             $pay = $em->getRepository('Plugin\HuaPayPlugin\Entity\Payment')->find(1);
-
-            if( !$pay ){
+            if (!$pay) {
                 $pay = new Entity\Payment();
                 $pay->setId(1);
                 $pay->setIsTesting(1);
-		$pay->setApiToken(HUAPAY_APITOKEN_DEFAULT);
+		$pay->setApiToken(self::HUAPAY_APITOKEN_DEFAULT);
                 $em->persist($pay);
                 $em->flush($pay);
             }
 
-	    $method_1 = $em->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod')->find(1);
-            if (!$method_1) {
-                $payment_id = $this->createPayment('UnionPay(銀聯)', $app);
+	    $id = 1;
+	    foreach (self::PAYMENT_METHOD_INFO as $info) {
+		$payment_method = $em->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod')->find($id);
+		if (!$payment_method) {
+		    $payment_id = $this->createPayment($info['name'], $app);
 
-		$method_1 = new Entity\PaymentMethod();
-		$method_1->setId(1);
-		$method_1->setPluginPaymentId($pay->getId());
-		$method_1->setPaymentId($payment_id);
-		$method_1->setIsEnabled(1);
-		$method_1->setName('unionpay');
-		$em->persist($method_1);
+		    $payment_method = new Entity\PaymentMethod();
+		    $payment_method->setId($id);
+		    $payment_method->setPluginPaymentId($pay->getId());
+		    $payment_method->setPaymentId($payment_id);
+		    $payment_method->setIsEnabled(1);
+		    $payment_method->setName($info['shortname']);
+		    $em->persist($payment_method);
+		    $em->flush();
+		    $this->enablePayment($payment_id, $app);
+		}
+		$payment_method->setIsEnabled(1);
+		$em->persist($payment_method);
 		$em->flush();
-                $this->enablePayment($payment_id, $app);
-            }
-	    $method_1->setIsEnabled(1);
-	    $em->persist($method_1);
-	    $em->flush();
-            $this->enablePayment($method_1->getPaymentId(), $app);
+		$this->enablePayment($payment_method->getPaymentId(), $app);
 
-	    $method_2 = $em->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod')->find(2);
-            if (!$method_2) {
-                $payment_id = $this->createPayment('AliPay(支付宝)', $app);
-
-		$method_2 = new Entity\PaymentMethod();
-		$method_2->setId(2);
-		$method_2->setPluginPaymentId($pay->getId());
-		$method_2->setPaymentId($payment_id);
-		$method_2->setIsEnabled(1);
-		$method_2->setName('alipay');
-		$em->persist($method_2);
-		$em->flush();
-                $this->enablePayment($payment_id, $app);
-            }
-	    $method_2->setIsEnabled(1);
-	    $em->persist($method_2);
-	    $em->flush();
-            $this->enablePayment($method_2->getPaymentId(), $app);
-
-	    $method_3 = $em->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod')->find(3);
-            if (!$method_3) {
-                $payment_id = $this->createPayment('WeChatPay(微信支付)', $app);
-
-		$method_3 = new Entity\PaymentMethod();
-		$method_3->setId(3);
-		$method_3->setPluginPaymentId($pay->getId());
-		$method_3->setPaymentId($payment_id);
-		$method_3->setIsEnabled(1);
-		$method_3->setName('wechatpay');
-		$em->persist($method_3);
-		$em->flush();
-                $this->enablePayment($payment_id, $app);
-            }
-	    $method_3->setIsEnabled(1);
-	    $em->persist($method_3);
-	    $em->flush();
-            $this->enablePayment($method_3->getPaymentId(), $app);
+		$id++;
+	    }
 
             $em->getConnection()->commit();
 
