@@ -19,14 +19,6 @@ use Eccube\Common\Constant;
 
 class PluginManager extends AbstractPluginManager
 {
-    /* TO BE MOVED INTO "Const.php" */
-    const API_TOKEN_DEFAULT = 'HUAPAY_API_TOKEN_DEFAULT';
-    const PAYMENT_METHOD_INFO = [
-	[ 'shortname' => 'unionpay', 'name' => 'UnionPay(銀聯)'],
-	[ 'shortname' => 'alipay', 'name' => 'AliPay(支付宝)'],
-	[ 'shortname' => 'wechatpay', 'name' => 'WeChatPay(微信支付)'],
-    ];
-
     /**
      * プラグインインストール時の処理
      *
@@ -65,18 +57,18 @@ class PluginManager extends AbstractPluginManager
         $em = $app['orm.em'];
         $em->getConnection()->beginTransaction();
         try {
-            $pay = $em->getRepository('Plugin\HuaPayPlugin\Entity\Payment')->find(1);
+            $pay = $em->getRepository('Plugin\HuaPayPlugin\Entity\Payment')->find(Constants::DEFAULT_PLUGIN_PAYMENT_ID);
             if (!$pay) {
                 $pay = new Entity\Payment();
-                $pay->setId(1);
+                $pay->setId(Constants::DEFAULT_PLUGIN_PAYMENT_ID);
                 $pay->setIsTesting(1);
-		$pay->setApiToken(self::HUAPAY_APITOKEN_DEFAULT);
+		$pay->setApiToken(Constants::HUAPAY_APITOKEN_DEFAULT);
                 $em->persist($pay);
                 $em->flush($pay);
             }
 
 	    $id = 1;
-	    foreach (self::PAYMENT_METHOD_INFO as $info) {
+	    foreach (Constants::PAYMENT_METHOD_INFO as $info) {
 		$payment_method = $em->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod')->find($id);
 		if (!$payment_method) {
 		    $payment_id = $this->createPayment($info['name'], $app);
@@ -153,6 +145,7 @@ class PluginManager extends AbstractPluginManager
 
         return($Payment->getId());
     }
+   
     private function enablePayment($payment_id, $app)
     {
         $em = $app['orm.em'];
@@ -179,6 +172,7 @@ class PluginManager extends AbstractPluginManager
             $em->flush($Payment);
         }
     }
+
     private function disableAllPayment($app)
     {
         $em = $app['orm.em'];
@@ -187,7 +181,7 @@ class PluginManager extends AbstractPluginManager
 	$query = $paymentMethodRepository->createQueryBuilder('p')
             ->where('p.plugin_payment_id = (:plugin_payment_id)')
             ->orderBy('p.id', 'ASC')
-            ->setParameter('plugin_payment_id', 1)
+            ->setParameter('plugin_payment_id', Constants::DEFAULT_PLUGIN_PAYMENT_ID)
             ->getQuery();
 
 	$paymentMethods = $query->getResult();
