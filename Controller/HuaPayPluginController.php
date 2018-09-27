@@ -5,6 +5,7 @@ use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Plugin\HuaPayPlugin;
+use Plugin\HuaPayPlugin\Constants;
 
 class HuaPayPluginController
 {
