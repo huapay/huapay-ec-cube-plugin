@@ -5,6 +5,7 @@ use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
 use Plugin\HuaPayPlugin;
+use Plugin\HuaPayPlugin\Errors;
 use Plugin\HuaPayPlugin\Constants;
 
 class HuaPayPluginController
@@ -70,6 +71,8 @@ class HuaPayPluginController
         
 	    $app['orm.em']->flush();
 	    $app['orm.em']->getConnection()->commit();
+
+	    $app['eccube.service.cart']->clear()->save();
 
 	    $app['session']->set($this->sessionOrderKey, $order->getId());
         
