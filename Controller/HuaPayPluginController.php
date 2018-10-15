@@ -36,7 +36,7 @@ class HuaPayPluginController
 	$ret = $this->processCurl($app, $payment_config->getIsTesting(), $api_token, $api_vender, $api_reference,
 	                          $pre_order_id, $order->getPaymentTotal());
         if (!$ret) {
-	    return $app['view']->render('error.twig', array('error_message' => Errors::MESSAGE_PAYMENT_FAILURE,
+	    return $app['view']->render('error.twig', array('error_message' => Errors::MESSAGE_PAYMENT_SERVER_FAILURE,
 		                                            'error_title' => Errors::TITLE_DEFAULT));
         }
         
@@ -130,6 +130,8 @@ class HuaPayPluginController
     }
 
     private function processCurl(\Eccube\Application $app, $is_testing, $api_token, $api_vender, $api_reference, $pre_order_id, $payment_total) {
+        ob_start();
+        $out = fopen('php://output', 'w');
         $handle = curl_init($this->getNihaoPayBaseUrl($is_testing) . '/v1.1/transactions/securepay');
         $params = array(
             'amount' => $payment_total,
@@ -141,6 +143,8 @@ class HuaPayPluginController
             'callback_url' => $app->url('huapayplugin_callback'),
         );
         curl_setopt_array($handle, array(
+            CURLOPT_VERBOSE => true,
+	    CURLOPT_STDERR => $out,
             CURLOPT_HTTPGET => true,
             CURLOPT_POSTFIELDS => http_build_query($params),
             CURLOPT_HTTPHEADER => array(
@@ -150,6 +154,10 @@ class HuaPayPluginController
         ));
         $ret = curl_exec($handle);
         curl_close($handle);
+
+	fclose($out);
+        $debug = ob_get_clean();
+	log_debug($debug);
         
         return $ret;
     }
