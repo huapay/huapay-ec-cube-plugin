@@ -1,7 +1,7 @@
-Plugin\HuaPayPlugin\Entity\Payment:
+Plugin\HuapayPlugin\Entity\Payment:
     type: entity
     table: plg_huapayplugin_payment
-    repositoryClass: Plugin\HuaPayPlugin\Repository\PaymentRepository
+    repositoryClass: Plugin\HuapayPlugin\Repository\PaymentRepository
     id:
         id:
             type: integer

@@ -1,15 +1,15 @@
 <?php
 
 /*
- * This file is part of the HuaPayPlugin
+ * This file is part of the HuapayPlugin
  *
- * Copyright (C) 2018 HuaPay
+ * Copyright (C) 2018 Huapay
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Plugin\HuaPayPlugin\Controller;
+namespace Plugin\HuapayPlugin\Controller;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +19,7 @@ class ConfigController
 {
 
     /**
-     * HuaPayPlugin用設定画面
+     * HuapayPlugin用設定画面
      *
      * @param Application $app
      * @param Request $request
@@ -86,11 +86,11 @@ class ConfigController
                 $app['orm.em']->flush();
 
                 $app->addSuccess('admin.register.complete', 'admin');
-                return $app->redirect($app['url_generator']->generate('plugin_HuaPayPlugin_config'));
+                return $app->redirect($app['url_generator']->generate('plugin_HuapayPlugin_config'));
             }
 	}
 
-        return $app->render('HuaPayPlugin/Resource/template/admin/config.twig', array(
+        return $app->render('HuapayPlugin/Resource/template/admin/config.twig', array(
             'form' => $form->createView(),
         ));
     }

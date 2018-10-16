@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\HuaPayPlugin;
+namespace Plugin\HuapayPlugin;
 
 use Eccube\Util\EntityUtil;
 use Eccube\Common\Constant;
@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
-class HuaPayPluginEvent
+class HuapayPluginEvent
 {
     private $app;
 

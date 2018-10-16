@@ -1,14 +1,14 @@
 <?php
-namespace Plugin\HuaPayPlugin\Controller;
+namespace Plugin\HuapayPlugin\Controller;
 
 use Eccube\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Eccube\Common\Constant;
-use Plugin\HuaPayPlugin;
-use Plugin\HuaPayPlugin\Errors;
-use Plugin\HuaPayPlugin\Constants;
+use Plugin\HuapayPlugin;
+use Plugin\HuapayPlugin\Errors;
+use Plugin\HuapayPlugin\Constants;
 
-class HuaPayPluginController
+class HuapayPluginController
 {
     private $sessionOrderKey = 'eccube.front.shopping.order.id';
     

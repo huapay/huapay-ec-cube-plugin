@@ -1,15 +1,15 @@
 <?php
 
 /*
- * This file is part of the HuaPayPlugin
+ * This file is part of the HuapayPlugin
  *
- * Copyright (C) 2018 HuaPay
+ * Copyright (C) 2018 Huapay
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Plugin\HuaPayPlugin;
+namespace Plugin\HuapayPlugin;
 
 use Eccube\Application;
 use Eccube\Plugin\AbstractPluginManager;
@@ -57,7 +57,7 @@ class PluginManager extends AbstractPluginManager
         $em = $app['orm.em'];
         $em->getConnection()->beginTransaction();
         try {
-            $pay = $em->getRepository('Plugin\HuaPayPlugin\Entity\Payment')->find(Constants::DEFAULT_PLUGIN_PAYMENT_ID);
+            $pay = $em->getRepository('Plugin\HuapayPlugin\Entity\Payment')->find(Constants::DEFAULT_PLUGIN_PAYMENT_ID);
             if (!$pay) {
                 $pay = new Entity\Payment();
                 $pay->setId(Constants::DEFAULT_PLUGIN_PAYMENT_ID);
@@ -69,7 +69,7 @@ class PluginManager extends AbstractPluginManager
 
 	    $id = 1;
 	    foreach (Constants::PAYMENT_METHOD_INFO as $info) {
-		$payment_method = $em->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod')->find($id);
+		$payment_method = $em->getRepository('Plugin\HuapayPlugin\Entity\PaymentMethod')->find($id);
 		if (!$payment_method) {
 		    $payment_id = $this->createPayment($info['name'], $app);
 
@@ -176,7 +176,7 @@ class PluginManager extends AbstractPluginManager
     private function disableAllPayment($app)
     {
         $em = $app['orm.em'];
-        $paymentMethodRepository = $em->getRepository('Plugin\HuaPayPlugin\Entity\PaymentMethod');
+        $paymentMethodRepository = $em->getRepository('Plugin\HuapayPlugin\Entity\PaymentMethod');
 
 	$query = $paymentMethodRepository->createQueryBuilder('p')
             ->where('p.plugin_payment_id = (:plugin_payment_id)')
