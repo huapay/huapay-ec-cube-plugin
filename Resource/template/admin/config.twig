@@ -2,7 +2,7 @@
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
-{% block title %}HuapayPlugin画面{% endblock %}
+{% block title %}Huapay{% endblock %}
 {% block sub_title %}HuapayPlugin設定{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
@@ -38,29 +38,17 @@
                     </div><!-- /.box-header -->
 
                     <div class="box-body form-horizontal">
+{%- for k, v in constant('Plugin\\HuapayPlugin\\Constants::PAYMENT_METHOD_INFO') -%}
+    {%- set uses_attr = 'uses_' ~ attribute(v, 'shortname') -%}
                         <div class="row">
-                            {{ form_label(form.uses_unionpay, 'UnionPay (銀聯)') }}
+                            {{ form_label(attribute(form, uses_attr), attribute(v, 'name')) }}
                             <div class="col-sm-10">
-                                {{ form_widget(form.uses_unionpay) }}
+                                {{ form_widget(attribute(form, uses_attr)) }}
                             </div>
-                            {{ form_errors(form.uses_unionpay) }}
+                            {{ form_errors(attribute(form, uses_attr)) }}
                         </div>
 
-                        <div class="row">
-                            {{ form_label(form.uses_alipay, 'AliPay (支付宝)') }}
-                            <div class="col-sm-10">
-                                {{ form_widget(form.uses_alipay) }}
-                            </div>
-                            {{ form_errors(form.uses_alipay) }}
-                        </div>
-
-                        <div class="row">
-			    {{ form_label(form.uses_wechatpay, 'WeChatPay (微信支付)') }}
-                            <div class="col-sm-10">
-				{{ form_widget(form.uses_wechatpay) }}
-                            </div>
-			    {{ form_errors(form.uses_wechatpay) }}
-                        </div>
+{%- endfor -%}
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
 
