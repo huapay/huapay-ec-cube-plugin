@@ -2,13 +2,13 @@
 
 {% set menus = ['store', 'plugin', 'plugin_list'] %}
 
-{% block title %}HuaPayPlugin画面{% endblock %}
-{% block sub_title %}HuaPayPlugin設定{% endblock %}
+{% block title %}HuapayPlugin画面{% endblock %}
+{% block sub_title %}HuapayPlugin設定{% endblock %}
 
 {% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
 
 {% block main %}
-    <form class="form-horizontal" method="post" action="{{ url('plugin_HuaPayPlugin_config') }}">
+    <form class="form-horizontal" method="post" action="{{ url('plugin_HuapayPlugin_config') }}">
         {{ form_widget(form._token) }}
         <div class="row" id="aside_wrap">
             <div class="col-md-9">

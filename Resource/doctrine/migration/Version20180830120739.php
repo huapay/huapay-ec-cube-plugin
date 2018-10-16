@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the HuaPayPlugin
+ * This file is part of the HuapayPlugin
  *
  * Copyright (C) [year] [author]
  *
@@ -20,7 +20,7 @@ use Eccube\Application;
 class Version20180830120739 extends AbstractMigration
 {
     protected $entities = array(
-        'Plugin\HuaPayPlugin\Entity\Payment'
+        'Plugin\HuapayPlugin\Entity\Payment'
     );
 
     /**

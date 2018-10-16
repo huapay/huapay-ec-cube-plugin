@@ -1,22 +1,22 @@
 <?php
 
 /*
- * This file is part of the HuaPayPlugin
+ * This file is part of the HuapayPlugin
  *
- * Copyright (C) 2018 HuaPay
+ * Copyright (C) 2018 Huapay
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Plugin\HuaPayPlugin\Form\Type;
+namespace Plugin\HuapayPlugin\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class HuaPayPluginConfigType extends AbstractType
+class HuapayPluginConfigType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)

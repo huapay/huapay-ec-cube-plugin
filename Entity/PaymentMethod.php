@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\HuaPayPlugin\Entity;
+namespace Plugin\HuapayPlugin\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

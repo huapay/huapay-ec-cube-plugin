@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\HuaPayPlugin\Repository;
+namespace Plugin\HuapayPlugin\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

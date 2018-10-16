@@ -1,7 +1,7 @@
-Plugin\HuaPayPlugin\Entity\PaymentMethod:
+Plugin\HuapayPlugin\Entity\PaymentMethod:
     type: entity
     table: plg_huapayplugin_paymentmethod
-    repositoryClass: Plugin\HuaPayPlugin\Repository\PaymentMethodRepository
+    repositoryClass: Plugin\HuapayPlugin\Repository\PaymentMethodRepository
     indexes:
         plugin_payment_id_name_index:
             columns: [ plugin_payment_id, name ]

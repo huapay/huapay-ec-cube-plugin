@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\HuaPayPlugin;
+namespace Plugin\HuapayPlugin;
 
 class Errors {
     const TITLE_DEFAULT = "エラー";

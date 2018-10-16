@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\HuaPayPlugin;
+namespace Plugin\HuapayPlugin;
 
 class Constants {
     const HUAPAY_APITOKEN_DEFAULT = 'HUAPAY_API_TOKEN_DEFAULT';
