@@ -124,24 +124,27 @@ class PluginManager extends AbstractPluginManager
 
     private function createPayment($method, $app)
     {
-        $em = $app['orm.em'];
-        $Payment = new \Eccube\Entity\Payment();
+        $Payment = $app['eccube.repository.payment']->findOneBy(array('method' => $method));
+        if (!$Payment) {
+            $Payment = new \Eccube\Entity\Payment();
 
-        $rank = $app['eccube.repository.payment']->findOneBy(array(), array('rank' => 'DESC'))
-                ->getRank() + 1;
-	$Member = $em->getRepository('Eccube\Entity\Member')->find(1);
+            $em = $app['orm.em'];
+            $rank = $app['eccube.repository.payment']->findOneBy(array(), array('rank' => 'DESC'))
+                    ->getRank() + 1;
+	    $Member = $em->getRepository('Eccube\Entity\Member')->find(1);
 
-        $Payment->setMethod($method);
-        $Payment->setCharge(0);
-        $Payment->setRuleMin(0);
-        $Payment->setFixFlg(Constant::ENABLED);
-        $Payment->setChargeFlg(Constant::ENABLED);
-        $Payment->setRank($rank);
-        $Payment->setDelFlg(Constant::DISABLED);
-	$Payment->setCreator($Member);
+            $Payment->setMethod($method);
+            $Payment->setCharge(0);
+            $Payment->setRuleMin(0);
+            $Payment->setFixFlg(Constant::ENABLED);
+            $Payment->setChargeFlg(Constant::ENABLED);
+            $Payment->setRank($rank);
+            $Payment->setDelFlg(Constant::DISABLED);
+	    $Payment->setCreator($Member);
 
-        $em->persist($Payment);
-        $em->flush($Payment);
+            $em->persist($Payment);
+            $em->flush($Payment);
+        }
 
         return($Payment->getId());
     }
